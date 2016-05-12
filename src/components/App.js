@@ -1,5 +1,8 @@
 import React from 'react'
 import {Tabs,Tab} from 'material-ui/Tabs'
+import AppBar from 'material-ui/AppBar'
+import IconButton from 'material-ui/IconButton'
+import NavigationArrowBack from 'material-ui/svg-icons/navigation/arrow-back'
 import {
 	getMuiTheme,
 	MuiThemeProvider
@@ -9,7 +12,10 @@ class App extends React.Component {
     constructor(props,context){
         super(props,context)
         this.state = {
-            value:'home'
+            value:'home',
+            title:'主页',
+            navLeft:<i />,//<IconButton><NavigationArrowBack /></IconButton>
+            navRight:null
         }
     }
     static propTypes = {
@@ -18,6 +24,20 @@ class App extends React.Component {
     static contextTypes = {
         router:React.PropTypes.object
     }
+    componentWillMount(){
+        if(!this.props.location.pathname) return
+        switch (this.props.location.pathnem) {
+            case '/me':
+                this.setState({
+                    title:'我',
+                    value:'me'
+                })
+                break;
+        
+            default:
+                break;
+        }
+    }
     handleChange = (value)=>{
         this.setState({
             value:value
@@ -25,9 +45,15 @@ class App extends React.Component {
         switch(value){
             case 'home':
                 this.context.router.push('/home')
+                this.setState({
+                    title:'主页'
+                })
                 break
             case 'me' :
                 this.context.router.push('/me')
+                this.setState({
+                    title:'我'
+                })
                 break
             default:
                 break
@@ -37,17 +63,25 @@ class App extends React.Component {
         flex:{
             display:'flex',
             flexDirection: 'column',
-            // flexWrap:'wrap'
             minHeight: '100vh'
         },
         content:{
             flex:1
+        },
+        title:{
+            textAlign:'center'
         }
     }
     render(){
         return(
             <MuiThemeProvider muiTheme = {getMuiTheme()}>
                 <div style = {this.styles.flex}>
+                    <AppBar
+                        title = {this.state.title}
+                        titleStyle = {this.styles.title}
+                        iconElementLeft = {this.state.navLeft}
+                        iconElementRight = {this.state.navRight}
+                    />
                     <div style={this.styles.content}>
                         {this.props.children}
                     </div>

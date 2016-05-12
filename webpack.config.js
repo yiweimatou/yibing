@@ -27,10 +27,10 @@ webpackConfig.entry = {
     ] : APP_ENTRY_PATH,
     vendor: [
         'react',
-        'debug',
+        // 'debug',
         'react-router',
         'react-dom',
-        'history',
+        // 'history',
         'material-ui',
         'formsy-material-ui'
     ]
